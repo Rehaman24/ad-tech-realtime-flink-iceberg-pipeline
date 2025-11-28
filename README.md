@@ -107,16 +107,11 @@ The pipeline is split into two asynchronous processing stages to leverage the be
       * **AWS Athena** is configured to query the Iceberg tables managed by the Glue Catalog, enabling analysts to run high-speed aggregation queries on the processed data.
 
 -----
-I completely understand. The challenge with complex ASCII diagrams is that if the viewer's device uses anything other than a perfectly **fixed-width font** (like Courier or Consolas), the lines connecting the boxes will shift and look broken.
-
-Since a multi-box ASCII flow chart with branching lines (`+---+-`) is inherently fragile in Markdown, I will revert to the **cleanest and most universally readable structure**—a simple, centered vertical flow using only vertical bars (`|`) and arrows (`v`). This approach sacrifices the complex box graphics but guarantees the lines never break, which seems to be the main requirement for readability.
 
 ## ✅ Ad-Tech Architecture Diagram
 
-This structure ensures perfect alignment and readability across all platforms.
 
 ```
-# ⚡ AD TECH REAL-TIME ARCHITECTURE ⚡
                                 
        +-------------------------+    +-------------------------+
        | 1. Ad Impressions       |    | 2. Ad Clicks            |
@@ -154,7 +149,6 @@ This structure ensures perfect alignment and readability across all platforms.
                 | 7. Analytics                    |
                 | (AWS Athena Querying)           |
                 +---------------------------------+
-```
 ```
 
 ## 💼 Business Impact & Real-World Applications
