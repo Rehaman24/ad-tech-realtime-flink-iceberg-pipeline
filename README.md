@@ -1,19 +1,16 @@
-I can certainly create a high-quality, similarly structured README for your Ad Tech Real-Time Data Analysis project, adopting the professional tone, structure, and content elements from the provided retail pipeline example.
-
-Here is the comprehensive README for your project:
-
------
 
 # ⚡ Ad Tech Real-Time Data Analysis Pipeline
 
 > A production-grade, end-to-end streaming data pipeline that joins, enriches, and persists Ad Impressions and Clicks data in real-time, enabling immediate analytics via a high-performance **Apache Iceberg** data lake and **AWS Athena**.
 
-[](https://www.python.org/)
-[](https://aws.amazon.com/kinesis/)
-[](https://flink.apache.org/)
-[](https://iceberg.apache.org/)
-[](https://aws.amazon.com/glue/)
-[](https://aws.amazon.com/athena/)
+[![AWS](https://img.shields.io/badge/Amazon_Web_Services-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=for-the-badge&logo=apache-spark&logoColor=white)](https://spark.apache.org/)
+[![AWS Kinesis](https://img.shields.io/badge/AWS%20Kinesis-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/kinesis/)
+[![Apache Flink](https://img.shields.io/badge/Apache%20Flink-E65239?style=for-the-badge&logo=apache-flink&logoColor=white)](https://flink.apache.org/)
+[![Apache Iceberg](https://img.shields.io/badge/Apache%20Iceberg-008CFF?style=for-the-badge&logo=apache-iceberg&logoColor=white)](https://iceberg.apache.org/)
+[![AWS Glue](https://img.shields.io/badge/AWS%20Glue-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/glue/)
+[![AWS Athena](https://img.shields.io/badge/AWS%20Athena-1D6990?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/athena/)
 
 | **🔗 [Interactive Architecture]** | **📊 [Jump to Data Model](https://www.google.com/search?q=%23-data-model)** | **⏱️ [Jump to Performance](https://www.google.com/search?q=%23-performance-metrics--design-highlights)**
 
@@ -187,6 +184,34 @@ The Glue job consumes the joined stream and handles the complex logic for Iceber
     WHEN NOT MATCHED THEN INSERT *
     ```
 
+## ⚖️ Trade-Offs and Decisions
+
+Building a high-performance, real-time data lakehouse requires strategic trade-offs across cost, latency, complexity, and transactional guarantees. 
+
+### 1. Flink vs. Spark Streaming for Real-Time Join
+
+| Decision | Choice | Rationale | Trade-Off |
+| :--- | :--- | :--- | :--- |
+| **Real-Time Engine** | **Apache Flink** | Flink provides a true stream-processing engine, offering **low-latency stateful computations** and **fine-grained control over time** (watermarks). This is critical for achieving **exactly-once semantics** and precise windowed joins for click attribution. | **Higher Complexity & Cost:** Flink cluster maintenance (even managed) is more costly than simpler micro-batch approaches like Spark Structured Streaming for the same workload. |
+| **Persistence Engine** | **AWS Glue (Spark)** | Spark Structured Streaming is the current standard for **efficiently writing to data lake table formats** (like Iceberg) due to its mature integration and robust support for the `MERGE INTO` query. | **Micro-Batch Latency:** While Flink handles the join in real-time, the data must wait for the Spark micro-batch interval to be **persisted** to Iceberg. This is an acceptable latency trade-off for the crucial **atomic upsert guarantee**. |
+
+---
+
+### 2. Apache Iceberg Write Mode (COW vs MOR)
+
+| Decision | Choice | Rationale | Trade-Off |
+| :--- | :--- | :--- | :--- |
+| **Iceberg Write Mode** | **Copy-on-Write (COW) with `MERGE INTO`** | **Prioritizes Read Performance:** COW ensures query engines (like Athena) read clean Parquet files without merging delete logs on the fly, which is ideal for the **read-heavy BI/Analytics workload** of the Ad Tech data. | **Higher Write Amplification:** Updates and upserts are **slower** as they require rewriting entire data files that contain updated records. This trade-off is managed by the Glue job to balance file sizes. |
+| **Upsert Mechanism** | **`MERGE INTO`** | Ensures **atomicity** (all-or-nothing transactions) and prevents **data duplication** by updating existing records or inserting new ones based on the composite key (`ad_id`, `impression_id`). | **Shuffling Overhead:** The `MERGE INTO` operation requires data shuffling (Exchange) and sorting in Spark, which is typically the **most expensive** part of the Glue job runtime. |
+
+---
+
+### 3. Latency vs. Cost
+
+| Decision | Goal | Rationale | Trade-Off |
+| :--- | :--- | :--- | :--- |
+| **Latency Target** | **Low Latency (50-100ms)** | Required for real-time fraud detection and bid optimization feedback loops in Ad Tech. Flink provides the necessary **event-at-a-time processing** to achieve this. | **Higher Cost:** Maintaining a continuous, low-latency Flink cluster (AWS Managed Flink) is inherently **more expensive** and resource-intensive than batch processing or micro-batching. |
+| **Resource Strategy** | **Hybrid Pipeline** | By pushing the persistence logic to the **cheaper, serverless AWS Glue** service, we **amortize the high cost** of the always-on Flink cluster. This separation minimizes Flink's responsibility to only the stateful join. | **Increased End-to-End Complexity:** Requires managing two separate streaming jobs (Flink and Glue) and guaranteeing consistency between Kinesis, Flink, and Glue. |
 -----
 
 ## 🧊 Data Model
