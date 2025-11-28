@@ -1,18 +1,21 @@
 
-# ⚡ Ad Tech Real-Time Data Analysis Pipeline
+#  Ad-Tech Real-Time Data Analysis Pipeline
 
 > A production-grade, end-to-end streaming data pipeline that joins, enriches, and persists Ad Impressions and Clicks data in real-time, enabling immediate analytics via a high-performance **Apache Iceberg** data lake and **AWS Athena**.
 
 [![AWS](https://img.shields.io/badge/Amazon_Web_Services-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
+[![Amazon S3](https://img.shields.io/badge/Amazon_S3-569A31?style=for-the-badge&logo=amazon-s3&logoColor=white)](https://aws.amazon.com/s3/)
 [![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![AWS Managed Flink](https://img.shields.io/badge/AWS%20Managed%20Flink-E65239?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/kinesis/data-analytics/)
 [![PySpark](https://img.shields.io/badge/PySpark-E25A1C?style=for-the-badge&logo=apache-spark&logoColor=white)](https://spark.apache.org/)
+[![Glue Catalog](https://img.shields.io/badge/Glue_Catalog-FF9900?style=for-the-badge&logo=aws-glue&logoColor=white)](https://aws.amazon.com/glue/catalog/)
 [![AWS Kinesis](https://img.shields.io/badge/AWS%20Kinesis-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/kinesis/)
 [![Apache Flink](https://img.shields.io/badge/Apache%20Flink-E65239?style=for-the-badge&logo=apache-flink&logoColor=white)](https://flink.apache.org/)
 [![Apache Iceberg](https://img.shields.io/badge/Apache%20Iceberg-008CFF?style=for-the-badge&logo=apache-iceberg&logoColor=white)](https://iceberg.apache.org/)
 [![AWS Glue](https://img.shields.io/badge/AWS%20Glue-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/glue/)
 [![AWS Athena](https://img.shields.io/badge/AWS%20Athena-1D6990?style=for-the-badge&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/athena/)
 
-| **🔗 [Interactive Architecture]** | **📊 [Jump to Data Model](https://www.google.com/search?q=%23-data-model)** | **⏱️ [Jump to Performance](https://www.google.com/search?q=%23-performance-metrics--design-highlights)**
+| **🔗 [Interactive Architecture]** | **🧊 [Jump to Data Model](#🧊-data-model)** | **⏱️ [Jump to Performance](#📊-performance-metrics--design-highlights)**
 
 -----
 
@@ -28,8 +31,6 @@
 -----
 
 ##  Quick Start Guide
-
-
 
 **👔 For Recruiters (30 sec):**
 [TL;DR Summary](#⚡-tldr-for-recruiters-30-second-summary) → [Architecture](#📐-architecture-overview) → [Tech Stack](#🛠️-technologies--tools)
