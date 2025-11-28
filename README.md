@@ -111,7 +111,7 @@ I completely understand. The challenge with complex ASCII diagrams is that if th
 
 Since a multi-box ASCII flow chart with branching lines (`+---+-`) is inherently fragile in Markdown, I will revert to the **cleanest and most universally readable structure**—a simple, centered vertical flow using only vertical bars (`|`) and arrows (`v`). This approach sacrifices the complex box graphics but guarantees the lines never break, which seems to be the main requirement for readability.
 
-## ✅ Final Ad Tech Architecture Diagram (Vertical Flow Guarantee)
+## ✅ Ad-Tech Architecture Diagram
 
 This structure ensures perfect alignment and readability across all platforms.
 
