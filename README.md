@@ -27,16 +27,20 @@
 
 -----
 
-## 🚀 Quick Start Guide
+##  Quick Start Guide
+
+
 
 **👔 For Recruiters (30 sec):**
-[TL;DR Summary](https://www.google.com/search?q=%23-tldr-for-recruiters-30-second-summary) → [Architecture](https://www.google.com/search?q=%23-architecture-overview) → [Tech Stack](https://www.google.com/search?q=%23-technologies-tools)
+[TL;DR Summary](#⚡-tldr-for-recruiters-30-second-summary) → [Architecture](#📐-architecture-overview) → [Tech Stack](#🛠️-technologies--tools)
 
 **👨‍💻 For Engineers (5 min):**
-[Setup Flink/Maven](https://www.google.com/search?q=%231-flink-application-packaging-and-deployment) → [Glue Job Logic](https://www.google.com/search?q=%232-glue-spark-streaming-for-enrichment-and-persistence) → [Data Model](https://www.google.com/search?q=%23-data-model)
+[Setup Flink/Maven](#1-flink-application-packaging-and-deployment) → [Glue Job Logic](#2-glue-spark-streaming-for-enrichment-and-persistence) → [Data Model](#🧊-data-model)
 
 **🔍 For Hiring Managers (2 min):**
-[Business Impact](https://www.google.com/search?q=%23-business-impact--real-world-applications) → [Performance Metrics](https://www.google.com/search?q=%23-performance-metrics--design-highlights) → [Key Achievements](https://www.google.com/search?q=%23-key-achievements)
+[Business Impact](#💼-business-impact--real-world-applications) → [Performance Metrics](#📊-performance-metrics--design-highlights) → [Key Achievements](#🎯-key-achievements)
+
+---
 
 -----
 
@@ -247,10 +251,15 @@ This is the final, production-ready fact table that stores the attributed and en
 ## 🎯 Key Achievements
 
 ✅ **Hybrid Stream Processing**: Successfully integrated AWS Managed Flink (low-latency join) and AWS Glue (stateful merge/upsert) for an end-to-end solution.
+
 ✅ **Atomic Data Lake Upsert**: Implemented `MERGE INTO` logic in Spark Streaming to maintain **100% data integrity** in the Iceberg data lake.
+
 ✅ **Real-Time Attribution**: Achieved **exactly-once processing** semantics with Flink/Kinesis, ensuring clicks are accurately attributed within a 30-second window.
+
 ✅ **Managed Dependencies**: Used **Maven** to package the complex PyFlink application and its Java dependencies for robust deployment.
+
 ✅ **Operational Analytics**: Data is immediately queryable via **AWS Athena** on the Iceberg table, supporting BI and ad-hoc analysis.
+
 ✅ **Data Enrichment**: Applied multiple complex business rules (e.g., premium ad logic, platform categorization) on the fly.
 
 -----
@@ -259,21 +268,21 @@ This is the final, production-ready fact table that stores the attributed and en
 
 ### Challenge 1: Achieving Atomic Upserts in Spark Streaming
 
-**Problem**: Traditional Spark/Hadoop workflows struggle with ACID properties, especially for **upserts** (updates/deletes) in streaming.
-**Solution**: Leveraged **Apache Iceberg** as the table format and executed the `MERGE INTO` command within a `foreachBatch` function in the Glue job. This allowed isolated micro-batch transactions against the Iceberg table.
-**Learning**: Iceberg provides the necessary transactional layer to make Spark Streaming suitable for reliable data lake updates.
+**Problem**:<br> Traditional Spark/Hadoop workflows struggle with ACID properties, especially for **upserts** (updates/deletes) in streaming.
+**Solution**:<br> Leveraged **Apache Iceberg** as the table format and executed the `MERGE INTO` command within a `foreachBatch` function in the Glue job. This allowed isolated micro-batch transactions against the Iceberg table.
+**Learning**: <br>Iceberg provides the necessary transactional layer to make Spark Streaming suitable for reliable data lake updates.
 
 ### Challenge 2: Watermarking and Time-Bounded Joins in Flink
 
-**Problem**: Ensuring clicks are correctly matched to impressions, even if they arrive out of order, within a reasonable time window.
-**Solution**: Applied **Watermarks** to both Kinesis sources based on the `event_time` and defined a 30-second window for the `JOIN` operation, allowing for event time skew.
-**Learning**: Watermarks and windowed joins are essential for correctness in real-time stream processing where event arrival order is not guaranteed.
+**Problem**:<br> Ensuring clicks are correctly matched to impressions, even if they arrive out of order, within a reasonable time window.
+**Solution**:<br> Applied **Watermarks** to both Kinesis sources based on the `event_time` and defined a 30-second window for the `JOIN` operation, allowing for event time skew.
+**Learning**:<br> Watermarks and windowed joins are essential for correctness in real-time stream processing where event arrival order is not guaranteed.
 
 ### Challenge 3: Flink Deployment with PyFlink/Kinesis Connector
 
-**Problem**: Packaging the Python script with its necessary Java connector JAR for deployment on AWS Managed Flink.
-**Solution**: Used **Maven's Shade and Assembly plugins** to create a single deployment ZIP containing the Python code and the dependency fat JAR (`pyflink-dependencies.jar`).
-**Learning**: Understanding the JVM/Python separation in PyFlink deployment is crucial for operationalizing applications on managed services.
+**Problem**:<br> Packaging the Python script with its necessary Java connector JAR for deployment on AWS Managed Flink.
+**Solution**:<br> Used **Maven's Shade and Assembly plugins** to create a single deployment ZIP containing the Python code and the dependency fat JAR (`pyflink-dependencies.jar`).
+**Learning**:<br> Understanding the JVM/Python separation in PyFlink deployment is crucial for operationalizing applications on managed services.
 
 -----
 
@@ -332,7 +341,7 @@ This generates `target/ad-flink-streaming-1.0.0.zip` (deployable) and `target/py
 
 ## Author
 
-**[Your Name]**
-[Your Title/Role]
+**Rehaman Ali Shaik**
+Data Engineer | 2 Years Of Experience
 **LinkedIn**: [Your LinkedIn Link]
-**GitHub**: [Your GitHub Link]
+**GitHub**: https://github.com/Rehaman24
