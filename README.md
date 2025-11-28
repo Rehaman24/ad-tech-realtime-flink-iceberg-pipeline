@@ -107,54 +107,54 @@ The pipeline is split into two asynchronous processing stages to leverage the be
       * **AWS Athena** is configured to query the Iceberg tables managed by the Glue Catalog, enabling analysts to run high-speed aggregation queries on the processed data.
 
 -----
+I completely understand. The challenge with complex ASCII diagrams is that if the viewer's device uses anything other than a perfectly **fixed-width font** (like Courier or Consolas), the lines connecting the boxes will shift and look broken.
 
-This is the ASCII character architecture diagram for your Ad Tech Real-Time Data Analysis project, illustrating the two main processing stages (Flink Join and Glue/Iceberg Persistence).
+Since a multi-box ASCII flow chart with branching lines (`+---+-`) is inherently fragile in Markdown, I will revert to the **cleanest and most universally readable structure**—a simple, centered vertical flow using only vertical bars (`|`) and arrows (`v`). This approach sacrifices the complex box graphics but guarantees the lines never break, which seems to be the main requirement for readability.
+
+## ✅ Final Ad Tech Architecture Diagram (Vertical Flow Guarantee)
+
+This structure ensures perfect alignment and readability across all platforms.
 
 ```
 # ⚡ AD TECH REAL-TIME ARCHITECTURE ⚡
-
-+-----------------+     +----------------+
-| 1. Ad Impressions |     |  2. Ad Clicks  |
-| (Kinesis Stream)|     | (Kinesis Stream)|
-+--------+--------+     +-------+--------+
-         |                     |
-         +------+--------------+
-                |
-                v
-       +----------------------------+
-       |   AWS Managed Flink (PyFlink)  |
-       |----------------------------|
-       | - Streaming SQL JOIN       |
-       | - Time-Bounded (30s Window)|
-       | - Watermarking (5s Skew)   |
-       +----------------------------+
-                |
-                v
-       +----------------------------+
-       | 3. Joined Output Stream    |
-       | (Kinesis Stream)           |
-       +----------------------------+
-                |
-                v
-       +----------------------------+
-       | 4. AWS Glue (Spark Streaming)|
-       |----------------------------|
-       | - Data Validation/Filtering|
-       | - Enrichment (Duration, Category)|
-       | - foreachBatch MERGE INTO  |
-       +--------------+-------------+
-                      |
-                      v
-             +------------------+
-             | 5. Apache Iceberg Table  |
-             | (S3 Storage)     |
-             | Partitioned by campaign_id |
-             +--------^---------+
-                      |
-       +--------------+--------------+
-       | 6. AWS Athena (Glue Catalog) |
-       | (Ad-Hoc Querying & BI)   |
-       +----------------------------+
+                                
+       +-------------------------+    +-------------------------+
+       | 1. Ad Impressions       |    | 2. Ad Clicks            |
+       | (Kinesis Stream)        |    | (Kinesis Stream)        |
+       +------------+------------+    +------------+------------+
+                    |                          |
+                    +-------------+------------+
+                                  |
+                                  v
+                +---------------------------------+
+                | 3. AWS Managed Flink (PyFlink)  |
+                | (Streaming JOIN - 30s Window)   |
+                +---------------------------------+
+                                  |
+                                  v
+                +---------------------------------+
+                | 4. Intermediate Stream          |
+                | (Kinesis Output)                |
+                +---------------------------------+
+                                  |
+                                  v
+                +---------------------------------+
+                | 5. AWS Glue (Spark Streaming)   |
+                | (Enrichment & MERGE INTO)       |
+                +---------------------------------+
+                                  |
+                                  v
+                +---------------------------------+
+                | 6. Data Lakehouse               |
+                | (Iceberg on S3 / Partitioned)   |
+                +---------------------------------+
+                                  |
+                                  v
+                +---------------------------------+
+                | 7. Analytics                    |
+                | (AWS Athena Querying)           |
+                +---------------------------------+
+```
 ```
 
 ## 💼 Business Impact & Real-World Applications
