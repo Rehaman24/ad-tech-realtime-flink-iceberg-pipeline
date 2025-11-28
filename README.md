@@ -108,6 +108,55 @@ The pipeline is split into two asynchronous processing stages to leverage the be
 
 -----
 
+This is the ASCII character architecture diagram for your Ad Tech Real-Time Data Analysis project, illustrating the two main processing stages (Flink Join and Glue/Iceberg Persistence).
+
+```
+# ⚡ AD TECH REAL-TIME ARCHITECTURE ⚡
+
++-----------------+     +----------------+
+| 1. Ad Impressions |     |  2. Ad Clicks  |
+| (Kinesis Stream)|     | (Kinesis Stream)|
++--------+--------+     +-------+--------+
+         |                     |
+         +------+--------------+
+                |
+                v
+       +----------------------------+
+       |   AWS Managed Flink (PyFlink)  |
+       |----------------------------|
+       | - Streaming SQL JOIN       |
+       | - Time-Bounded (30s Window)|
+       | - Watermarking (5s Skew)   |
+       +----------------------------+
+                |
+                v
+       +----------------------------+
+       | 3. Joined Output Stream    |
+       | (Kinesis Stream)           |
+       +----------------------------+
+                |
+                v
+       +----------------------------+
+       | 4. AWS Glue (Spark Streaming)|
+       |----------------------------|
+       | - Data Validation/Filtering|
+       | - Enrichment (Duration, Category)|
+       | - foreachBatch MERGE INTO  |
+       +--------------+-------------+
+                      |
+                      v
+             +------------------+
+             | 5. Apache Iceberg Table  |
+             | (S3 Storage)     |
+             | Partitioned by campaign_id |
+             +--------^---------+
+                      |
+       +--------------+--------------+
+       | 6. AWS Athena (Glue Catalog) |
+       | (Ad-Hoc Querying & BI)   |
+       +----------------------------+
+```
+
 ## 💼 Business Impact & Real-World Applications
 
 ### Problem This Pipeline Solves
